@@ -1,9 +1,8 @@
 import './styles/main.scss';
+import { App } from './app/app';
 
 document.addEventListener('DOMContentLoaded', () => {
+    const app = new App();
     const root = document.getElementById('root');
-
-    if (root) {
-        root.innerHTML = `<h1>Hello Calculator App!</h1>`;
-    }
+    root.append(app.render());
 });
