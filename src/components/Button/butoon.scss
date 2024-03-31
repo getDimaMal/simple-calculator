@@ -1,0 +1,26 @@
+@import "src/styles/variables";
+
+.btn {
+  width: calc(25% - 10px);
+  box-sizing: border-box;
+
+  margin: 5px;
+  padding: 20px;
+
+  border: none;
+  border-radius: 5px;
+  background-color: $button-background-color;
+
+  font-size: 1.5em;
+  text-align: center;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken($button-background-color, 10%);
+  }
+
+  &:active {
+    transform: translateY(2px);
+  }
+}

@@ -1,6 +1,13 @@
+import Button from '../components/Button';
+
 export class App {
 
     render(): HTMLElement {
-        return document.createElement('div');
+        const app = document.createElement('div');
+        const button = new Button({ label: 'Click Me!', onClick: () => console.log('Hello, World!') });
+
+        app.append(button.render());
+
+        return app;
     }
 }
