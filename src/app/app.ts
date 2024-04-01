@@ -1,6 +1,4 @@
-import Keypad from '../components/Keypad';
-import Button from '../components/Button';
-import Display from '../components/Display';
+import { CalculatorView } from './views/calculator.view';
 
 const keys = [
     { label: 'C', type: 'function' },
@@ -27,23 +25,40 @@ const keys = [
     { label: '0', type: 'value' },
     { label: '.', type: 'value' },
     { label: '=', type: 'operator' },
-] as ConstructorParameters<typeof Keypad>[0]['keys'];
+] as ConstructorParameters<typeof CalculatorView>[0]['keys'];
 
 export class App {
+    private view: CalculatorView;
+
+    constructor() {
+        this.view = new CalculatorView({
+            keys,
+            displayValue: '0',
+            handlers: {
+                value: this.handleValue.bind(this),
+                operator: this.handleOperator.bind(this),
+                function: this.handleFunction.bind(this),
+            },
+        });
+    }
+
+    private handleValue(value: string) {
+        this.view.displayUpdate(value);
+        console.log('value', value);
+    }
+
+    private handleOperator(value: string) {
+        console.log('operator', value);
+    }
+
+    private handleFunction(value: string) {
+        console.log('function', value);
+    }
 
     render(): HTMLElement {
         const app = document.createElement('div');
 
-        const handlers = {
-            value: (value: string) => console.log('value', value),
-            operator: (value: string) => console.log('operator', value),
-            function: (value: string) => console.log('function', value),
-        };
-        const keypad = new Keypad({ keys, handlers, Button });
-        const display = new Display({ value: '0' });
-
-        app.append(display.render());
-        app.append(keypad.render());
+        app.append(this.view.render());
 
         return app;
     }

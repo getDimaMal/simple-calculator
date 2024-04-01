@@ -1,14 +1,11 @@
-type KeyTypes = 'value' | 'operator' | 'function';
+import Button from "../Button";
 
-interface ButtonProps {
-    label: string;
-    onClick: () => void;
-}
+type KeyTypes = 'value' | 'operator' | 'function';
 
 interface KeypadProps {
     keys: { label: string, type: KeyTypes }[];
     handlers: Record<KeyTypes, (value: string) => void>;
-    Button: new (props: ButtonProps) => { render: () => HTMLButtonElement };
+    Button: typeof Button
 }
 
 export class Keypad {
@@ -16,7 +13,6 @@ export class Keypad {
 
     constructor(private props: KeypadProps) {
         this.keypad = document.createElement('div');
-        this.renderButtons();
     }
 
     private renderButtons() {
@@ -28,8 +24,8 @@ export class Keypad {
         }
     }
 
-
     render() {
+        this.renderButtons();
         return this.keypad;
     }
 }
