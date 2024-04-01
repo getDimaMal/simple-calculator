@@ -1,5 +1,6 @@
 import Keypad from '../components/Keypad';
 import Button from '../components/Button';
+import Display from '../components/Display';
 
 const keys = [
     { label: 'C', type: 'function' },
@@ -10,7 +11,7 @@ const keys = [
     { label: '1', type: 'value' },
     { label: '2', type: 'value' },
     { label: '3', type: 'value' },
-    { label: '*', type: 'operator' },
+    { label: 'x', type: 'operator' },
 
     { label: '4', type: 'value' },
     { label: '5', type: 'value' },
@@ -22,7 +23,7 @@ const keys = [
     { label: '9', type: 'value' },
     { label: '+', type: 'operator' },
 
-    { label: 'Del', type: 'function' },
+    { label: '⌫', type: 'function' },
     { label: '0', type: 'value' },
     { label: '.', type: 'value' },
     { label: '=', type: 'operator' },
@@ -39,7 +40,9 @@ export class App {
             function: (value: string) => console.log('function', value),
         };
         const keypad = new Keypad({ keys, handlers, Button });
+        const display = new Display({ value: '0' });
 
+        app.append(display.render());
         app.append(keypad.render());
 
         return app;

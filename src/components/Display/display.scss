@@ -1,0 +1,12 @@
+@import "src/styles/variables";
+
+.display {
+  margin: 20px 5px;
+  padding: 10px;
+
+  border-radius: 5px;
+  background-color: $display-background-color;
+
+  font-size: 2rem;
+  text-align: right;
+}
