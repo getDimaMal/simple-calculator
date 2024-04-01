@@ -1,4 +1,5 @@
 import { CalculatorView } from '../views/calculator.view';
+import { CalculatorModel } from '../models/calculator.model';
 
 const keys = [
     { label: 'C', type: 'function' },
@@ -29,31 +30,38 @@ const keys = [
 
 export class CalculatorController {
     private view: CalculatorView;
+    private model: CalculatorModel;
 
     constructor() {
         this.view = new CalculatorView({
             keys,
-            displayValue: '0',
             handlers: {
-                value: this.handleValue.bind(this),
-                operator: this.handleOperator.bind(this),
-                function: this.handleFunction.bind(this),
+                value: this.handleValue,
+                operator: this.handleOperator,
+                function: this.handleFunction,
             },
         });
+
+        this.model = new CalculatorModel({ onChange: this.view.displayUpdate });
     }
 
-    private handleValue(value: string) {
-        this.view.displayUpdate(value);
-        console.log('value', value);
-    }
+    private handleValue = (value: string) => {
+        this.model.inputPush(value);
+    };
 
     private handleOperator(value: string) {
         console.log('operator', value);
     }
 
-    private handleFunction(value: string) {
-        console.log('function', value);
-    }
+    private handleFunction = <T extends string>(value: T) => {
+        const actions = {
+            'C': this.model.reset,
+            '⌫': this.model.inputPop,
+            '+/-': this.model.inverse,
+        } as Record<T, () => void>;
+
+        if (value in actions) actions[value]();
+    };
 
     render() {
         return this.view.render();
