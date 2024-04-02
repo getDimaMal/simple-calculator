@@ -1,26 +1,53 @@
 @import "src/styles/variables";
 
 .btn {
-  width: calc(25% - 10px);
-  box-sizing: border-box;
+    width: calc(25% - 0.5rem);
+    box-sizing: border-box;
 
-  margin: 5px;
-  padding: 20px;
+    margin: 0.25rem;
+    padding: 1rem;
 
-  border: none;
-  border-radius: 5px;
-  background-color: $button-background-color;
+    border: none;
+    border-radius: 1rem;
 
-  font-size: 1.5em;
-  text-align: center;
+    font-size: 2rem;
+    text-align: center;
 
-  cursor: pointer;
+    cursor: pointer;
 
-  &:hover {
-    background-color: darken($button-background-color, 10%);
-  }
+    &.primary {
+        background-color: $button-background-color-primary;
+        color: $button-color-primary;
 
-  &:active {
-    transform: translateY(2px);
-  }
+        &:hover {
+            background-color: darken($button-background-color-primary, 10%);
+        }
+    }
+
+    &.secondary {
+        background-color: $button-background-color-secondary;
+        color: $button-color-secondary;
+
+        &:hover {
+            background-color: darken($button-background-color-secondary, 10%);
+        }
+    }
+
+    &.secondary {
+        background-color: $button-background-color-secondary;
+        color: $button-color-secondary;
+
+        &:hover {
+            background-color: darken($button-background-color-secondary, 10%);
+        }
+    }
+
+    &.third {
+        background-color: $button-background-color-third;
+        color: $button-color-third;
+
+        &:hover {
+            background-color: darken($button-background-color-third, 10%);
+        }
+    }
 }

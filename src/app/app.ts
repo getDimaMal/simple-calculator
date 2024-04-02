@@ -9,10 +9,6 @@ export class App {
     }
 
     render(): HTMLElement {
-        const app = document.createElement('div');
-
-        app.append(this.calculator.render());
-
-        return app;
+        return this.calculator.render();
     }
 }

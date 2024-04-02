@@ -1,4 +1,4 @@
-export type OperatorTypes = '+' | '-' | '*' | '/'
+export type OperatorTypes = '+' | '-' | 'x' | '/'
 
 
 export class CalculatorModel {
@@ -10,7 +10,7 @@ export class CalculatorModel {
         const actions: Record<OperatorTypes, (a: number, b: number) => number> = {
             '+': (a, b) => a + b,
             '-': (a, b) => a - b,
-            '*': (a, b) => a * b,
+            'x': (a, b) => a * b,
             '/': (a, b) => a / b,
         };
 

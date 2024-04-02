@@ -1,0 +1,20 @@
+$breakpoints: (
+        "mobile": 480px,
+        "tablet": 768px,
+        "desktop": 1024px,
+);
+
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (max-width: map-get($breakpoints, $breakpoint)) {
+      #root {
+        height: 100%;
+        overflow: hidden;
+        max-width: map-get($breakpoints, $breakpoint);
+      }
+      @content;
+    }
+  } @else {
+    @warn "The breakpoint `#{$breakpoint}` is not defined in the `$breakpoints` map.";
+  }
+}

@@ -1,16 +1,29 @@
+@import "mixins";
 @import "variables";
 
 * {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
-html {
-  font-size: 16px;
-  font-family: "Helvetica Neue", sans-serif;
-  color: $font-color;
+html, body {
+    margin: auto;
+    height: 100vh;
+    overflow-x: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    font-size: 16px;
+    font-family: "Noto Sans Tagalog", sans-serif;
+    color: $font-color;
+
+    @include respond-to(mobile) {}
+    @include respond-to(tablet) {}
+    @include respond-to(desktop) {}
 }
 
 body {
-  background-color: $body-background-color;
+    background-color: $body-background-color;
 }

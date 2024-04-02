@@ -1,11 +1,11 @@
-import Button from "../Button";
+import Button from '../Button';
 
 type KeyTypes = 'value' | 'operator' | 'function';
 
 interface KeypadProps {
-    keys: { label: string, type: KeyTypes }[];
+    keys: { label: string, type: KeyTypes, variant: ConstructorParameters<typeof Button>[0]['variant'] }[];
     handlers: Record<KeyTypes, (value: string) => void>;
-    Button: typeof Button
+    Button: typeof Button;
 }
 
 export class Keypad {
@@ -13,13 +13,14 @@ export class Keypad {
 
     constructor(private props: KeypadProps) {
         this.keypad = document.createElement('div');
+        this.keypad.classList.add('keypad')
     }
 
     private renderButtons() {
         const { keys, handlers, Button } = this.props;
 
-        for (const { label, type } of keys) {
-            const button = new Button({ label, onClick: () => handlers[type](label) });
+        for (const { label, type, variant } of keys) {
+            const button = new Button({ label, variant, onClick: () => handlers[type](label) });
             this.keypad.append(button.render());
         }
     }

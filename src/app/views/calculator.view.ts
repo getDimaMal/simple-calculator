@@ -1,6 +1,7 @@
 import Display from '../../components/Display';
 import Keypad from '../../components/Keypad';
 import Button from '../../components/Button';
+import Calculator from '../../components/Calculator';
 
 
 interface CalculatorViewProps {
@@ -9,14 +10,14 @@ interface CalculatorViewProps {
 }
 
 export class CalculatorView {
-    private display;
-    private keypad;
+    private readonly display;
+    private calculator;
 
     constructor(private props: CalculatorViewProps) {
-        const {  keys, handlers } = this.props;
+        const { keys, handlers } = this.props;
 
         this.display = new Display({ value: '0' });
-        this.keypad = new Keypad({ keys, handlers, Button });
+        this.calculator = new Calculator({ Display: this.display, Keypad: new Keypad({ keys, handlers, Button }) });
     }
 
     displayUpdate = (value: string) => {
@@ -24,10 +25,6 @@ export class CalculatorView {
     };
 
     render = () => {
-        const container = document.createElement('div');
-        container.append(this.display.render());
-        container.append(this.keypad.render());
-
-        return container;
+        return this.calculator.render();
     };
 }
