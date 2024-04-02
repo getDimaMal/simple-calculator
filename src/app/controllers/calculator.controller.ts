@@ -1,5 +1,5 @@
 import { CalculatorView } from '../views/calculator.view';
-import { CalculatorModel } from '../models/calculator.model';
+import { CalculatorModel, OperatorTypes } from '../models/calculator.model';
 
 const keys = [
     { label: 'C', type: 'function' },
@@ -10,7 +10,7 @@ const keys = [
     { label: '1', type: 'value' },
     { label: '2', type: 'value' },
     { label: '3', type: 'value' },
-    { label: 'x', type: 'operator' },
+    { label: '*', type: 'operator' },
 
     { label: '4', type: 'value' },
     { label: '5', type: 'value' },
@@ -25,14 +25,15 @@ const keys = [
     { label: '⌫', type: 'function' },
     { label: '0', type: 'value' },
     { label: '.', type: 'value' },
-    { label: '=', type: 'operator' },
+    { label: '=', type: 'function' },
 ] as ConstructorParameters<typeof CalculatorView>[0]['keys'];
 
 export class CalculatorController {
-    private view: CalculatorView;
     private model: CalculatorModel;
+    private view: CalculatorView;
 
     constructor() {
+        this.model = new CalculatorModel();
         this.view = new CalculatorView({
             keys,
             handlers: {
@@ -41,26 +42,34 @@ export class CalculatorController {
                 function: this.handleFunction,
             },
         });
-
-        this.model = new CalculatorModel({ onChange: this.view.displayUpdate });
     }
 
-    private handleValue = (value: string) => {
-        this.model.inputPush(value);
+    private displayUpdate = (value: string | number) => {
+        this.view.displayUpdate(String(value || 0));
     };
 
-    private handleOperator(value: string) {
-        console.log('operator', value);
-    }
+    private handleValue = (value: string) => {
+        const result = this.model.appendChar(value);
+        this.displayUpdate(result);
+    };
 
-    private handleFunction = <T extends string>(value: T) => {
-        const actions = {
+    private handleOperator = (value: OperatorTypes) => {
+        this.model.handleOperator(value);
+    };
+
+    private handleFunction = (value: string) => {
+        const actions: Record<string, () => string | number> = {
+            '=': this.model.calculate,
+            '+/-': this.model.toggleSign,
+            '%': this.model.getPercentage,
+            '⌫': this.model.deleteLastChar,
             'C': this.model.reset,
-            '⌫': this.model.inputPop,
-            '+/-': this.model.inverse,
-        } as Record<T, () => void>;
+        };
 
-        if (value in actions) actions[value]();
+        if (value in actions) {
+            const result = actions[value]();
+            this.displayUpdate(result);
+        }
     };
 
     render() {

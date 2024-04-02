@@ -1,38 +1,64 @@
-type OperatorTypes = '/' | '*' | '-' | '+'
+export type OperatorTypes = '+' | '-' | '*' | '/'
 
-interface CalculatorModelProps {
-    onChange: (value: string) => void;
-}
 
 export class CalculatorModel {
-    private result = 0;
-    private input = '';
-    private operator: OperatorTypes | null = null;
+    private currentResult = 0;
+    private currentInput = '';
+    private currantOperator: OperatorTypes | null = null;
 
-    constructor(private props: CalculatorModelProps) {}
+    calculate = () => {
+        const actions: Record<OperatorTypes, (a: number, b: number) => number> = {
+            '+': (a, b) => a + b,
+            '-': (a, b) => a - b,
+            '*': (a, b) => a * b,
+            '/': (a, b) => a / b,
+        };
 
-    inputPush = (input: string) => {
-        if (input === '.' && this.input.includes('.')) return;
-
-        this.input += input;
-        this.props.onChange(this.input);
+        const input = parseFloat(this.currentInput);
+        return actions[this.currantOperator](this.currentResult, input);
     };
 
-    inputPop = () => {
-        this.input = this.input.slice(0, -1);
-        this.props.onChange(this.input || '0');
+    handleOperator = (operator: OperatorTypes) => {
+        if (this.currentInput) {
+            this.currentResult = this.currantOperator ? this.calculate() : parseFloat(this.currentInput);
+        }
+        this.currantOperator = operator;
+        this.currentInput = '';
+
+        return this.currentResult;
+    };
+
+    getPercentage = () => {
+        const result = (this.currentResult || 1) * parseFloat(this.currentInput) / 100;
+        this.currentInput = String(result);
+
+        return result;
+    };
+
+    appendChar = (input: string) => {
+        if (input !== '.' || !this.currentInput.includes('.')) {
+            const str = this.currentInput + input;
+            this.currentInput = str === '.' ? '0.' : str;
+        }
+        return this.currentInput;
+    };
+
+    deleteLastChar = () => {
+        const str = this.currentInput.slice(0, -1);
+        this.currentInput = str === '0' ? '' : str;
+        return this.currentInput;
+    };
+
+    toggleSign = () => {
+        if (!this.currentInput) return;
+
+        this.currentInput = String(parseFloat(this.currentInput) * -1);
+        return this.currentInput;
     };
 
     reset = () => {
-        this.input = '';
-        this.operator = null;
-        this.props.onChange('0');
-    };
-
-    inverse = () => {
-        if (!this.input) return;
-
-        this.input = String(parseFloat(this.input) * -1);
-        this.props.onChange(this.input);
+        this.currentInput = '';
+        this.currantOperator = null;
+        return this.currentInput;
     };
 }
