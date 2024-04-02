@@ -54,7 +54,8 @@ export class CalculatorController {
     };
 
     private handleOperator = (value: OperatorTypes) => {
-        this.model.handleOperator(value);
+        const result = this.model.handleOperator(value);
+        this.displayUpdate(result);
     };
 
     private handleFunction = (value: string) => {

@@ -14,14 +14,18 @@ export class CalculatorModel {
             '/': (a, b) => a / b,
         };
 
-        const input = parseFloat(this.currentInput);
-        return actions[this.currantOperator](this.currentResult, input);
+        this.currentResult = actions[this.currantOperator](this.currentResult, parseFloat(this.currentInput));
+        this.currantOperator = null;
+        this.currentInput = '';
+
+        return this.currentResult;
     };
 
     handleOperator = (operator: OperatorTypes) => {
         if (this.currentInput) {
             this.currentResult = this.currantOperator ? this.calculate() : parseFloat(this.currentInput);
         }
+
         this.currantOperator = operator;
         this.currentInput = '';
 
@@ -36,16 +40,17 @@ export class CalculatorModel {
     };
 
     appendChar = (input: string) => {
-        if (input !== '.' || !this.currentInput.includes('.')) {
-            const str = this.currentInput + input;
-            this.currentInput = str === '.' ? '0.' : str;
+        if (input === '.') {
+            this.currentInput += this.currentInput.includes('.') ? '' : '.';
+        } else {
+            this.currentInput = String(parseFloat(this.currentInput + input));
         }
+
         return this.currentInput;
     };
 
     deleteLastChar = () => {
-        const str = this.currentInput.slice(0, -1);
-        this.currentInput = str === '0' ? '' : str;
+        this.currentInput = this.currentInput.slice(0, -1);
         return this.currentInput;
     };
 
